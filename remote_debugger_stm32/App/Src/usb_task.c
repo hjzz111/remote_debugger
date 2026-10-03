@@ -1,6 +1,6 @@
 #include "usb_task.h"
 #include "ring_buffer.h"
-#include "usbd_cdc_if.h"
+#include "usb_control.h"
 
 extern ring_buffer_typedef usb_ring_buffer;
 extern ring_buffer_typedef ota_buffer;
@@ -113,12 +113,12 @@ uint8_t usbReceiveTask(uint16_t *notification) {
 void usbTransmitTask(uint16_t *notification) {
     if (*notification & 0x8000) {
         uint8_t ack = 0x00;
-        CDC_Transmit_FS(&ack, 1);
+        usbControlTx(&ack, 1);
         *notification &= 0x7FFF;
     }
     if (*notification & 0x4000) {
         uint8_t ack = 0xFF;
-        CDC_Transmit_FS(&ack, 1);
+        usbControlTx(&ack, 1);
         *notification &= 0xBFFF;
     }
 }

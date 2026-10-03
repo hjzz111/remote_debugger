@@ -1,12 +1,12 @@
 #include "task.h"
-#include "delay.h"
-#include "usb_app.h"
-#include "my_assert.h"
-#include "ring_buffer.h"
 
 #include "usb_task.h"
 #include "device_manager.h"
 #include "ota.h"
+
+#include "ring_buffer.h"
+
+#include "delay.h"
 
 ring_buffer_typedef usb_ring_buffer;
 ring_buffer_typedef ota_buffer;
@@ -20,7 +20,7 @@ void mainTask(void) {
     
     ringBufferInit(&usb_ring_buffer, 1024);
     ringBufferInit(&ota_buffer, 1024);
-    AppUSBInit();
+    usbInitTask();
     while (1) {
         usbReceiveTask(&task_notification);
         

@@ -1,12 +1,6 @@
 #include "device_manager.h"
 #include "delay.h"
-
-void devicePowerOn(void);
-void devicePowerOff(void);
-void deviceCommunicateOn(void);
-void deviceCommunicateOff(void);
-void deviceResetEnable(void);
-void deviceResetDisable(void);
+#include "device_control.h"
 
 void deviceManagerTask(uint16_t *notification) {
     if (*notification & 0x000F) {
@@ -35,28 +29,4 @@ void deviceManagerTask(uint16_t *notification) {
             *notification |= 0x8000;
         }
     }
-}
-
-void devicePowerOn(void) {
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
-}
-
-void devicePowerOff(void) {
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
-}
-
-void deviceCommunicateOn(void) {
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
-}
-
-void deviceCommunicateOff(void) {
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_SET);
-}
-
-void deviceResetEnable(void) {
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
-}
-
-void deviceResetDisable(void) {
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_SET);
 }

@@ -12,6 +12,8 @@ typedef enum {
 
 #define MIN_PROCESS_LEN     7
 
+#define usbInitTask()       usbControlInit()
+
 uint8_t usbReceiveTask(uint16_t *notification);
 
 void usbTransmitTask(uint16_t *notification);

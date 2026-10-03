@@ -81,7 +81,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
-            <RunUserProg2>1</RunUserProg2>
+            <RunUserProg2>0</RunUserProg2>
             <UserProg1Name>fromelf --bin -o "$L@L.bin" "#L</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../USB_DEVICE/App;../USB_DEVICE/Target;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../Core/Src</IncludePath>
+              <IncludePath>../Core/Inc;../USB_DEVICE/App;../USB_DEVICE/Target;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../Core/Src;..\App\Inc;..\BSP\Inc;..\Components\Inc;..\Platform\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -395,96 +395,6 @@
           <GroupName>Application/User/Core</GroupName>
           <Files>
             <File>
-              <FileName>usb_app.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\usb_app.c</FilePath>
-            </File>
-            <File>
-              <FileName>usb_app.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Core\Src\usb_app.h</FilePath>
-            </File>
-            <File>
-              <FileName>delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\delay.c</FilePath>
-            </File>
-            <File>
-              <FileName>delay.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Core\Src\delay.h</FilePath>
-            </File>
-            <File>
-              <FileName>task.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\task.c</FilePath>
-            </File>
-            <File>
-              <FileName>task.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Core\Src\task.h</FilePath>
-            </File>
-            <File>
-              <FileName>my_assert.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\my_assert.c</FilePath>
-            </File>
-            <File>
-              <FileName>my_assert.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Core\Src\my_assert.h</FilePath>
-            </File>
-            <File>
-              <FileName>sys.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\sys.c</FilePath>
-            </File>
-            <File>
-              <FileName>sys.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Core\Src\sys.h</FilePath>
-            </File>
-            <File>
-              <FileName>ring_buffer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\ring_buffer.c</FilePath>
-            </File>
-            <File>
-              <FileName>ring_buffer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Core\Src\ring_buffer.h</FilePath>
-            </File>
-            <File>
-              <FileName>heap.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\heap.c</FilePath>
-            </File>
-            <File>
-              <FileName>heap.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Core\Src\heap.h</FilePath>
-            </File>
-            <File>
-              <FileName>usb_task.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\usb_task.c</FilePath>
-            </File>
-            <File>
-              <FileName>usb_task.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Core\Src\usb_task.h</FilePath>
-            </File>
-            <File>
-              <FileName>device_manager.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Core\Src\device_manager.h</FilePath>
-            </File>
-            <File>
-              <FileName>device_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\device_manager.c</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/main.c</FilePath>
@@ -504,15 +414,90 @@
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f1xx_hal_msp.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>App</GroupName>
+          <Files>
+            <File>
+              <FileName>task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\Src\task.c</FilePath>
+            </File>
             <File>
               <FileName>ota.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\Src\ota.c</FilePath>
+              <FilePath>..\App\Src\ota.c</FilePath>
             </File>
             <File>
-              <FileName>ota.h</FileName>
+              <FileName>usb_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\Src\usb_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>device_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\Src\device_manager.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>BSP</GroupName>
+          <Files>
+            <File>
+              <FileName>device_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\Src\device_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>device_control.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Core\Src\ota.h</FilePath>
+              <FilePath>..\BSP\Inc\device_control.h</FilePath>
+            </File>
+            <File>
+              <FileName>usb_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\Src\usb_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\Inc\usb_control.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Components</GroupName>
+          <Files>
+            <File>
+              <FileName>heap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\Src\heap.c</FilePath>
+            </File>
+            <File>
+              <FileName>ring_buffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Components\Src\ring_buffer.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Platform</GroupName>
+          <Files>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Platform\Src\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>my_assert.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Platform\Src\my_assert.c</FilePath>
+            </File>
+            <File>
+              <FileName>sys.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Platform\Src\sys.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -675,5 +660,14 @@
     </components>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>remote_debugger_stm32</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>
