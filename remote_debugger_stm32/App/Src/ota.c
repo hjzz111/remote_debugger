@@ -5,20 +5,19 @@ extern ring_buffer_typedef ota_buffer;
 
 FLASH_EraseInitTypeDef erase_init;
 
-/* otaÔËĞĞÏà¹Ø */
+/* otaè¿è¡Œç›¸å…³ */
 uint8_t ota_start_flag = 0;
 uint32_t last_time = 0;
 uint32_t vtor = 0;
-/* ota°æ±¾ĞÅÏ¢Ïà¹Ø */
+/* otaç‰ˆæœ¬ä¿¡æ¯ç›¸å…³ */
 uint32_t version = 0;
 uint16_t size = 0;
-/* otaĞ´ÈëÏà¹Ø */
+/* otaå†™å…¥ç›¸å…³ */
 uint16_t ota_write_data = 0;
 uint8_t msb_flag = 0;
 uint32_t ota_write_addr = 0;
 
-/* ÄÚ²¿º¯Êı */
-uint8_t min(uint8_t data1, uint8_t data2);
+/* å†…éƒ¨å‡½æ•° */
 void updateFirmwareInfo(uint32_t version, uint8_t state, uint16_t size);
 
 void otaInit(void) {
@@ -28,9 +27,9 @@ void otaInit(void) {
     erase_init.Banks = FLASH_BANK_1;
 }
 
-/* ota»º³åÇø½á¹¹ */
+/* otaç¼“å†²åŒºç»“æ„ */
 /* ----------------------------------- */
-/* |otaÊı¾İÀàĞÍ| Êı¾İ³¤¶È |Ö¡±àºÅ|Êı¾İ| */
+/* |otaæ•°æ®ç±»å‹| æ•°æ®é•¿åº¦ |å¸§ç¼–å·|æ•°æ®| */
 /* ----------------------------------- */
 /* |    0xXX   |0xXX 0xXX| 0xXX |    | */
 /* ----------------------------------- */
@@ -42,13 +41,15 @@ void otaTask(uint16_t *notification) {
         uint16_t ota_len = ota_data[1];
         ota_len = (ota_len << 8) + ota_data[2];
         uint8_t ota_seq = ota_data[3];
+        (void)ota_seq;
         
         uint32_t page_error = 0;
+        uint16_t page_count = 0;
         
         switch (ota_type) {
-            /* µÚÒ»Ö¡½á¹¹£¬¸æËßĞ¾Æ¬Òª´«Êä³ÌĞò */
+            /* ç¬¬ä¸€å¸§ç»“æ„ï¼Œå‘Šè¯‰èŠ¯ç‰‡è¦ä¼ è¾“ç¨‹åº */
             /* ------------------------------- */
-            /* |        °æ±¾       | ¹Ì¼ş´óĞ¡ | */
+            /* |        ç‰ˆæœ¬       | å›ºä»¶å¤§å° | */
             /* ------------------------------- */
             /* |0xXX 0xXX 0xXX 0xXX|0xXX 0xXX| */
             /* ------------------------------- */
@@ -59,25 +60,26 @@ void otaTask(uint16_t *notification) {
                 version = (version << 8) + ota_data[7];
                 size = ota_data[8];
                 size = (size << 8) + ota_data[9];
-                if (size > 16484) {     // ¹Ì¼şÌ«´ó
+                if (size > APP_PROGRAM_MAX_SIZE) {     // å›ºä»¶å¤ªå¤§
                     *notification |= 0x4000;
                     break;
                 }
                 
                 ota_start_flag = 1;
                 
-                /* ½«¹Ì¼şĞÅÏ¢±ê¼ÇÎªÕıÔÚÉı¼¶ */
+                /* å°†å›ºä»¶ä¿¡æ¯æ ‡è®°ä¸ºæ­£åœ¨å‡çº§ */
                 updateFirmwareInfo(version, IOS_UPDATING, size);
                 
-                /* ²Á³ıapp2ÇøµÄÊı¾İ */
+                /* æ“¦é™¤app2åŒºçš„æ•°æ® */
                 HAL_FLASH_Unlock();
                 
-                for (uint8_t i = 0; i < min((size / 1024 + 1), 30); i ++) {
-                    for (uint16_t j = 0; j < 1024; j ++) {
-                        /* Èç¹ûÔ­±¾ÓĞÊı¾İÔò²Á³ı */
-                        if (*(volatile uint8_t *)(APP2_PROGRAM_ADDR + i * 1024 + j) != 0xFF) {
+                page_count = (uint16_t)((size + FLASH_PAGE_SIZE - 1U) / FLASH_PAGE_SIZE);
+                for (uint16_t i = 0; i < page_count; i ++) {
+                    for (uint16_t j = 0; j < FLASH_PAGE_SIZE; j ++) {
+                        /* å¦‚æœåŸæœ¬æœ‰æ•°æ®åˆ™æ“¦é™¤ */
+                        if (*(volatile uint8_t *)(APP2_PROGRAM_ADDR + i * FLASH_PAGE_SIZE + j) != 0xFF) {
                             
-                            erase_init.PageAddress = APP2_PROGRAM_ADDR + i * 1024;
+                            erase_init.PageAddress = APP2_PROGRAM_ADDR + i * FLASH_PAGE_SIZE;
                             HAL_FLASHEx_Erase(&erase_init, &page_error);
                                 
                             break;
@@ -87,22 +89,22 @@ void otaTask(uint16_t *notification) {
                 
                 HAL_FLASH_Lock();
                 
-                /* Çå¿Õ±êÖ¾Î» */
+                /* æ¸…ç©ºæ ‡å¿—ä½ */
                 msb_flag = 0;
                 ota_write_addr = 0;
                 ota_write_data = 0;
                 
-                /* Í¨ÖªÉÏÎ»»úĞ¾Æ¬×öºÃota×¼±¸ */
+                /* é€šçŸ¥ä¸Šä½æœºèŠ¯ç‰‡åšå¥½otaå‡†å¤‡ */
                 *notification |= 0x8000;
                 
-                /* Æô¶¯¼ÆÊ±Æ÷£¬³¤Ê±¼äÊÕ²»µ½Êı¾İÔò±ê¼Ç¹Ì¼şËğ»µ */
+                /* å¯åŠ¨è®¡æ—¶å™¨ï¼Œé•¿æ—¶é—´æ”¶ä¸åˆ°æ•°æ®åˆ™æ ‡è®°å›ºä»¶æŸå */
                 last_time = HAL_GetTick();
                 
                 break;
                 
-            /* Êı¾İÖ¡½á¹¹£¬¸æËßĞ¾Æ¬´«ÊäµÄÊı¾İÊÇÊ²Ã´ */
+            /* æ•°æ®å¸§ç»“æ„ï¼Œå‘Šè¯‰èŠ¯ç‰‡ä¼ è¾“çš„æ•°æ®æ˜¯ä»€ä¹ˆ */
             /* ------ */
-            /* |Êı¾İ| */
+            /* |æ•°æ®| */
             /* ------ */
             /* |    | */
             /* ------ */
@@ -123,21 +125,21 @@ void otaTask(uint16_t *notification) {
                     }
                     HAL_FLASH_Lock();
                     
-                    /* Í¨ÖªÉÏÎ»»úĞ¾Æ¬´¦ÀíºÃÕâÒ»Ö¡ */
+                    /* é€šçŸ¥ä¸Šä½æœºèŠ¯ç‰‡å¤„ç†å¥½è¿™ä¸€å¸§ */
                     *notification |= 0x8000;
                     
-                    /* ¸üĞÂ¼ÆÊ±Æ÷ */
+                    /* æ›´æ–°è®¡æ—¶å™¨ */
                     last_time = HAL_GetTick();
                 }
                 else {
-                    /* Í¨ÖªÊı¾İ´íÎó */
+                    /* é€šçŸ¥æ•°æ®é”™è¯¯ */
                     *notification |= 0x4000;
                 }
                 break;
                 
             case OTA_MSG_END:
                 if (ota_start_flag == 1) {
-                    /* Èç¹ûÓĞµ¥¶À×Ö½Ú£¬ÏÈĞ´Èë */
+                    /* å¦‚æœæœ‰å•ç‹¬å­—èŠ‚ï¼Œå…ˆå†™å…¥ */
                     if (msb_flag == 1) {
                         ota_write_data = ota_write_data + 0xFF00;
                         HAL_FLASH_Unlock();
@@ -146,26 +148,26 @@ void otaTask(uint16_t *notification) {
                         ota_write_addr  = ota_write_addr + 1;
                     }
                     
-                    /* Ğ£ÑéÊµ¼ÊĞ´ÈëÊı¾İ³¤¶ÈÊÇ·ñµÈÓÚ¹Ì¼ş³¤¶È */
+                    /* æ ¡éªŒå®é™…å†™å…¥æ•°æ®é•¿åº¦æ˜¯å¦ç­‰äºå›ºä»¶é•¿åº¦ */
                     if (ota_write_addr == size) {
-                        /* Êı¾İÕıÈ·£¬±£´æ¹Ì¼şĞÅÏ¢£¬±ê¼Ç¾ÍĞ÷×´Ì¬ */
+                        /* æ•°æ®æ­£ç¡®ï¼Œä¿å­˜å›ºä»¶ä¿¡æ¯ï¼Œæ ‡è®°å°±ç»ªçŠ¶æ€ */
                         updateFirmwareInfo(version, IOS_READY, size);
                         
-                        /* Í¨ÖªÉÏÎ»»úĞ¾Æ¬´¦ÀíºÃÕâÒ»Ö¡ */
+                        /* é€šçŸ¥ä¸Šä½æœºèŠ¯ç‰‡å¤„ç†å¥½è¿™ä¸€å¸§ */
                         *notification |= 0x8000;
                     }
                     else {
-                        /* Í¨ÖªÊı¾İ´íÎó */
+                        /* é€šçŸ¥æ•°æ®é”™è¯¯ */
                         *notification |= 0x4000;
-                        /* Êı¾İÓĞÎó£¬±£´æ¹Ì¼şĞÅÏ¢£¬±ê¼Ç´íÎó×´Ì¬ */
+                        /* æ•°æ®æœ‰è¯¯ï¼Œä¿å­˜å›ºä»¶ä¿¡æ¯ï¼Œæ ‡è®°é”™è¯¯çŠ¶æ€ */
                         updateFirmwareInfo(version, IOS_BROKEN, size);
                     }
-                    /* ÍË³öota½ø³Ì */
+                    /* é€€å‡ºotaè¿›ç¨‹ */
                     ota_start_flag = 0;
                     
                 }
                 else {
-                    /* Í¨ÖªÊı¾İ´íÎó */
+                    /* é€šçŸ¥æ•°æ®é”™è¯¯ */
                     *notification |= 0x4000;
                 }
                 break;
@@ -174,26 +176,22 @@ void otaTask(uint16_t *notification) {
         }
     }
     
-    /* ´«Êä³¬Ê±´¦Àí */
+    /* ä¼ è¾“è¶…æ—¶å¤„ç† */
     if (ota_start_flag == 1) {
         uint32_t now_time = HAL_GetTick();
         if (now_time > last_time + 1000) {
-            /* Í¨Öª´íÎó */
+            /* é€šçŸ¥é”™è¯¯ */
             *notification |= 0x4000;
-            /* Êı¾İÓĞÎó£¬±£´æ¹Ì¼şĞÅÏ¢£¬±ê¼Ç´íÎó×´Ì¬ */
+            /* æ•°æ®æœ‰è¯¯ï¼Œä¿å­˜å›ºä»¶ä¿¡æ¯ï¼Œæ ‡è®°é”™è¯¯çŠ¶æ€ */
             updateFirmwareInfo(version, IOS_BROKEN, size);
-            /* ÍË³öota½ø³Ì */
+            /* é€€å‡ºotaè¿›ç¨‹ */
             ota_start_flag = 0;
         }
     }
 }
 
-uint8_t min(uint8_t data1, uint8_t data2) {
-    return data1 <= data2?data1:data2;
-}
-
 void updateFirmwareInfo(uint32_t version, uint8_t state, uint16_t size) {
-    /* Ê×ÏÈ¶ÁÈ¡¾É¹Ì¼şĞÅÏ¢ */
+    /* é¦–å…ˆè¯»å–æ—§å›ºä»¶ä¿¡æ¯ */
     uint32_t app1_version = *(volatile uint32_t *)APP1_VERSION_ADDR;
     uint32_t app2_version = *(volatile uint32_t *)APP2_VERSION_ADDR;
     uint32_t app1_state   = *(volatile uint32_t *)APP1_IOS_STATE;
@@ -201,7 +199,7 @@ void updateFirmwareInfo(uint32_t version, uint8_t state, uint16_t size) {
     uint32_t app1_size    = *(volatile uint32_t *)APP1_IOS_SIZE;
     uint32_t app2_size    = *(volatile uint32_t *)APP2_IOS_SIZE;
     
-    /* ĞŞ¸Äapp2¹Ì¼şĞÅÏ¢ */
+    /* ä¿®æ”¹app2å›ºä»¶ä¿¡æ¯ */
     app2_version = version;
     app2_state = state;
     app2_size = size;

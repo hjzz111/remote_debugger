@@ -15,6 +15,8 @@
 
 #define APP2_PROGRAM_ADDR       0x08008C00
 
+#define APP_PROGRAM_MAX_SIZE    0x00007400U
+
 typedef enum {
     OTA_MSG_START = 0x01,
     OTA_MSG_DATA  = 0x02,

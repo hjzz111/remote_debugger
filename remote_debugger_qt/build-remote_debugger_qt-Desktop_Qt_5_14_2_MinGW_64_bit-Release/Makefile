@@ -248,6 +248,7 @@ Makefile: ../remote_debugger_qt/remote_debugger_qt.pro E:/qt/5.14.2/mingw73_64/m
 		E:/qt/5.14.2/mingw73_64/mkspecs/features/qt_config.prf \
 		E:/qt/5.14.2/mingw73_64/mkspecs/win32-g++/qmake.conf \
 		E:/qt/5.14.2/mingw73_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		E:/qt/5.14.2/mingw73_64/mkspecs/features/exclusive_builds.prf \
 		E:/qt/5.14.2/mingw73_64/mkspecs/features/toolchain.prf \
 		E:/qt/5.14.2/mingw73_64/mkspecs/features/default_pre.prf \
@@ -277,7 +278,6 @@ Makefile: ../remote_debugger_qt/remote_debugger_qt.pro E:/qt/5.14.2/mingw73_64/m
 		E:/qt/5.14.2/mingw73_64/lib/Qt5SerialPort.prl \
 		E:/qt/5.14.2/mingw73_64/lib/Qt5Core.prl \
 		E:/qt/5.14.2/mingw73_64/lib/qtmain.prl \
-		.qmake.stash \
 		E:/qt/5.14.2/mingw73_64/mkspecs/features/build_pass.prf
 	$(QMAKE) -o Makefile ..\remote_debugger_qt\remote_debugger_qt.pro -spec win32-g++ "CONFIG+=qtquickcompiler"
 E:/qt/5.14.2/mingw73_64/mkspecs/features/spec_pre.prf:
@@ -458,6 +458,7 @@ E:/qt/5.14.2/mingw73_64/mkspecs/features/qt_functions.prf:
 E:/qt/5.14.2/mingw73_64/mkspecs/features/qt_config.prf:
 E:/qt/5.14.2/mingw73_64/mkspecs/win32-g++/qmake.conf:
 E:/qt/5.14.2/mingw73_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 E:/qt/5.14.2/mingw73_64/mkspecs/features/exclusive_builds.prf:
 E:/qt/5.14.2/mingw73_64/mkspecs/features/toolchain.prf:
 E:/qt/5.14.2/mingw73_64/mkspecs/features/default_pre.prf:
@@ -487,7 +488,6 @@ E:/qt/5.14.2/mingw73_64/lib/Qt5Gui.prl:
 E:/qt/5.14.2/mingw73_64/lib/Qt5SerialPort.prl:
 E:/qt/5.14.2/mingw73_64/lib/Qt5Core.prl:
 E:/qt/5.14.2/mingw73_64/lib/qtmain.prl:
-.qmake.stash:
 E:/qt/5.14.2/mingw73_64/mkspecs/features/build_pass.prf:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\remote_debugger_qt\remote_debugger_qt.pro -spec win32-g++ "CONFIG+=qtquickcompiler"

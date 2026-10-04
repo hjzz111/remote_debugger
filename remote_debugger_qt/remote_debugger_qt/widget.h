@@ -48,7 +48,7 @@ private:
         OtaEnd
     };
 
-    static constexpr int FirmwareMaxSize = 16484;
+    static constexpr int FirmwareMaxSize = 0x7400;
     static constexpr int OtaChunkSize = 512;
     static constexpr int AckTimeoutMs = 1500;
 

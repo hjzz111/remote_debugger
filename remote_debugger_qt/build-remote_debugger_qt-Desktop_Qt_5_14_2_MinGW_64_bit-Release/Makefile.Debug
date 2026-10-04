@@ -477,6 +477,52 @@ debug/widget.o: ../remote_debugger_qt/widget.cpp ../remote_debugger_qt/widget.h 
 		E:/qt/5.14.2/mingw73_64/include/QtGui/qvector2d.h \
 		E:/qt/5.14.2/mingw73_64/include/QtGui/qtouchdevice.h \
 		ui_widget.h \
+		E:/qt/5.14.2/mingw73_64/include/QtCore/QVariant \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/QApplication \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qapplication.h \
+		E:/qt/5.14.2/mingw73_64/include/QtCore/qcoreapplication.h \
+		E:/qt/5.14.2/mingw73_64/include/QtCore/qeventloop.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qdesktopwidget.h \
+		E:/qt/5.14.2/mingw73_64/include/QtGui/qguiapplication.h \
+		E:/qt/5.14.2/mingw73_64/include/QtGui/qinputmethod.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/QComboBox \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qcombobox.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qabstractitemdelegate.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qstyleoption.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qabstractspinbox.h \
+		E:/qt/5.14.2/mingw73_64/include/QtGui/qvalidator.h \
+		E:/qt/5.14.2/mingw73_64/include/QtCore/qregularexpression.h \
+		E:/qt/5.14.2/mingw73_64/include/QtGui/qicon.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qslider.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qabstractslider.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qstyle.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qtabbar.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qtabwidget.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qrubberband.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qframe.h \
+		E:/qt/5.14.2/mingw73_64/include/QtCore/qabstractitemmodel.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/QHBoxLayout \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qboxlayout.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qlayout.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qlayoutitem.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qgridlayout.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/QLabel \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qlabel.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/QLineEdit \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qlineedit.h \
+		E:/qt/5.14.2/mingw73_64/include/QtGui/qtextcursor.h \
+		E:/qt/5.14.2/mingw73_64/include/QtGui/qtextformat.h \
+		E:/qt/5.14.2/mingw73_64/include/QtGui/qpen.h \
+		E:/qt/5.14.2/mingw73_64/include/QtGui/qtextoption.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/QProgressBar \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qprogressbar.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/QPushButton \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qpushbutton.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qabstractbutton.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/QSpacerItem \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/QSpinBox \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qspinbox.h \
+		E:/qt/5.14.2/mingw73_64/include/QtWidgets/QVBoxLayout \
 		E:/qt/5.14.2/mingw73_64/include/QtCore/QFile \
 		E:/qt/5.14.2/mingw73_64/include/QtWidgets/QFileDialog \
 		E:/qt/5.14.2/mingw73_64/include/QtWidgets/qfiledialog.h \
