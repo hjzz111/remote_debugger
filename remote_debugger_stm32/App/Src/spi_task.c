@@ -1,12 +1,13 @@
 #include "spi_task.h"
 #include "ring_buffer.h"
 #include "spi_control.h"
+#include "proconfig.h"
 
 extern ring_buffer_typedef spi_tx_buffer;
 
 spi_init_configitem spi_configitem;
 
-void spiTask(void) {
+void spiTask(uint16_t *notification) {
     /* 确保接收到足够多数据后再处理 */
     if (bufferGetLength(&spi_tx_buffer) < bufferPeekByte(&spi_tx_buffer, 1) + 2) {
         return;
@@ -21,14 +22,13 @@ void spiTask(void) {
                 spi_configitem.init.Direction = SPI_DIRECTION_2LINES;
                 spi_configitem.init.TIMode = SPI_TIMODE_DISABLE;
                 spi_configitem.init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+                spi_configitem.init.NSS = SPI_NSS_SOFT;
             
                 if (spi_data[2] == spi_master) {
                     spi_configitem.init.Mode = SPI_MODE_MASTER;
-                    spi_configitem.init.NSS = SPI_NSS_HARD_OUTPUT;
                 }
                 else {
                     spi_configitem.init.Mode = SPI_MODE_SLAVE;
-                    spi_configitem.init.NSS = SPI_NSS_HARD_INPUT;
                 }
                 
                 if (spi_data[3] == spi_data_8b) {
@@ -86,12 +86,22 @@ void spiTask(void) {
                     spi_configitem.init.CLKPhase = SPI_PHASE_2EDGE;
                 }
                 
-                spiInit(&spi_configitem);
+                if (spiInit(&spi_configitem) != pdPASS) {
+                    *notification |= 0x4000;
+                }
+                else {
+                    *notification |= 0x8000;
+                }
                 break;
             
             /* 发送spi数据，暂时不考虑接收 */
             case spi_tx:
-                spiChangeBytes(spi_data+2, spi_rx_data, spi_data[1]);
+                if (spiChangeBytes(spi_data+2, spi_rx_data, spi_data[1]) != pdPASS) {
+                    *notification |= 0x4000;
+                }
+                else {
+                    *notification |= 0x8000;
+                }
                 break;
             
             default:

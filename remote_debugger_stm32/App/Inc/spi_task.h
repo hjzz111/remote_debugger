@@ -1,6 +1,8 @@
 #ifndef __SPI_TASK_H
 #define __SPI_TASK_H
 
+#include "stdint.h"
+
 typedef enum {
     spi_init = 0x00,
     spi_tx   = 0x01
@@ -42,6 +44,6 @@ typedef enum {
     spi_clock_2edge = 0x01
 } spi_clock_phase;
 
-void spiTask(void);
+void spiTask(uint16_t *notification);
 
 #endif

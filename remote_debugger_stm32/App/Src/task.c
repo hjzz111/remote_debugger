@@ -30,7 +30,7 @@ void mainTask(void) {
         
         deviceManagerTask(&task_notification);
         
-        spiTask();
+        spiTask(&task_notification);
         
         usbTransmitTask(&task_notification);
         

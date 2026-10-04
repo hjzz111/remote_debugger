@@ -113,10 +113,10 @@ uint8_t usbReceiveTask(uint16_t *notification) {
             /* |    0xXX   |  0xXX |    | */
             /* ----------------------------------- */
             bufferRead(&usb_rx_buffer, spi_data, len + 7);
-            spi_head[0] = ota_data[5];
+            spi_head[0] = spi_data[5];
             spi_head[1] = (uint8_t)(len - 1);   /* spi一次最多收128位数据 */
             bufferWrite(&spi_tx_buffer, spi_head, 2);
-            bufferWrite(&spi_tx_buffer, spi_data + 7, len - 2);
+            bufferWrite(&spi_tx_buffer, spi_data + 6, len - 1);
             break;
         
         default:

@@ -2,14 +2,18 @@
 
 static SPI_HandleTypeDef spi1_handler;
 
-void spiInit(spi_init_configitem *configitem) {
+BaseType_t spiInit(spi_init_configitem *configitem) {
     if (configitem->spi_inited == 1) {
         spiDeinit(configitem);
     }
     spi1_handler.Instance = SPI1;
     spi1_handler.Init = configitem->init;
-    HAL_SPI_Init(&spi1_handler);
-    configitem->spi_inited = 1;
+    BaseType_t rtn = HAL_SPI_Init(&spi1_handler);
+    if (rtn == HAL_OK) {
+        configitem->spi_inited = 1;
+        return pdPASS;
+    }
+    return pdFAIL;
 }
 
 void spiDeinit(spi_init_configitem *configitem) {
@@ -42,12 +46,14 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle)
           
         GPIO_InitStruct.Pin = GPIO_PIN_4;
         if (spiHandle->Init.Mode == SPI_MODE_MASTER) {
-            GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+            GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
         }
         else {
             GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
         }
         HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+        /* 保证CS引脚初始为高电平 */
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
 
         GPIO_InitStruct.Pin = GPIO_PIN_6;
         GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -73,6 +79,9 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle)
     }
 }
 
-void spiChangeBytes(const uint8_t *pTxData, uint8_t *pRxData, uint16_t Size) {
-    HAL_SPI_TransmitReceive(&spi1_handler, pTxData, pRxData, Size, HAL_MAX_DELAY);
+BaseType_t spiChangeBytes(const uint8_t *pTxData, uint8_t *pRxData, uint16_t Size) {
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+    BaseType_t rtn = HAL_SPI_TransmitReceive(&spi1_handler, pTxData, pRxData, Size, HAL_MAX_DELAY);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+    return (rtn == HAL_OK)?pdPASS:pdFAIL;
 }

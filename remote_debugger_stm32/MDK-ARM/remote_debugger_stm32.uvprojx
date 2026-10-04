@@ -519,6 +519,11 @@
               <FileType>1</FileType>
               <FilePath>..\Platform\Src\sys.c</FilePath>
             </File>
+            <File>
+              <FileName>proconfig.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Platform\Inc\proconfig.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
